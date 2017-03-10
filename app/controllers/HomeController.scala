@@ -32,11 +32,15 @@ class HomeController @Inject() (implicit val messagesApi: MessagesApi) extends C
     Ok(views.html.index(form))
   }
 
+  def second = Action { implicit request ⇒
+    Ok(views.html.second())
+  }
+
   def upload = Action(parse.multipartFormData) { request ⇒
     println("Uploading...")
 
     request.body.file("archivo").map { archivo ⇒
-      val bytes = Files.readAllBytes(Paths.get(archivo.filename))
+      val bytes = Files.readAllBytes(archivo.ref.file.toPath)
       println("El archivo tiene tamanio" + bytes.size)
 
       Redirect(routes.HomeController.index).flashing("message" → "Uploaded")

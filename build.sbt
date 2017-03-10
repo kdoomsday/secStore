@@ -12,15 +12,15 @@ lazy val root = (project in file(".")).enablePlugins(PlayScala)
 
 scalaVersion := "2.11.8"
 
-libraryDependencies += filters
+// libraryDependencies += filters
 libraryDependencies += jdbc
 libraryDependencies += evolutions
-libraryDependencies += "org.scalatestplus.play" %% "scalatestplus-play" % "1.5.1" % Test
+libraryDependencies += "org.scalatestplus.play" %% "scalatestplus-play" % "1.5.1" % "test"
 
 lazy val doobieVersion = "0.3.0"
 
 libraryDependencies ++= Seq(
-  "org.postgresql"   % "postgresql" % "42.0.0",
+  // "org.postgresql"   % "postgresql" % "42.0.0",
   "com.roundeights" %% "hasher"     % "1.2.0",
 
   "org.tpolecat" %% "doobie-core"               % doobieVersion,
