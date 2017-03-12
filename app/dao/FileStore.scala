@@ -24,11 +24,10 @@ class DoobieStore @Inject() (db: Database) extends FileStore {
           values($name, $hash, $bytes)""".update.withUniqueGeneratedKeys("id")
 
   def all: ConnectionIO[List[Archivo]] = {
-    sql"""select id, name, hash from file_info""".query[Archivo].list
+    sql"""select id, name, hash, fecha from file_info""".query[Archivo].list
   }
 
   def store(name: String, bytes: Array[Byte], hash: String): Long = {
-    println(s"Archivo: $name\tHash: $hash")
     insert(name, bytes, hash).transact(xa).unsafePerformIO
   }
 

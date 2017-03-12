@@ -35,13 +35,7 @@ class HomeController @Inject() (store: FileStore)(implicit val messagesApi: Mess
     Ok(views.html.index(form, store.archivos()))
   }
 
-  def second = Action { implicit request ⇒
-    Ok(views.html.second())
-  }
-
   def upload = Action(parse.multipartFormData) { request ⇒
-    println("Uploading...")
-
     request.body.file("archivo").map { archivo ⇒
       val name = archivo.filename
       val bytes = Files.readAllBytes(archivo.ref.file.toPath)

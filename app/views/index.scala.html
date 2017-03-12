@@ -35,15 +35,19 @@
                         <th>Id</th>
                         <th>Nombre</th>
                         <th>Hash</th>
+                        <th>Fecha</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @for(a <- archivos) {
-                        <tr>
-                            <td>@a.id</td>
-                            <td>@a.name</td>
-                            <td>@a.hash</td>
-                        </tr>
+                    @defining(new java.text.SimpleDateFormat("yyyy-MM-dd hh:mm:ss")) { sdf =>
+                        @for(a <- archivos) {
+                            <tr>
+                                <td>@a.id</td>
+                                <td>@a.name</td>
+                                <td>@a.hash</td>
+                                <td>@sdf.format(a.fecha)</td>
+                            </tr>
+                        }
                     }
                 </tbody>
             </table>
