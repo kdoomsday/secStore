@@ -1,4 +1,4 @@
-@(form: Form[controllers.FormData])(implicit flash: Flash, messages: Messages)
+@(form: Form[controllers.FormData], archivos: List[Archivo])(implicit flash: Flash, messages: Messages)
 
 @main("Welcome to Play") {
     <div class="container">
@@ -8,19 +8,45 @@
             @alert("alert-warning", msg)
         }
 
-        @helper.form(action = routes.HomeController.upload, 'enctype -> "multipart/form-data") {
+        <div class="row">
 
-            <!-- <form action="@routes.HomeController.upload" enctype="multipart/form-data" method="POST"> -->
+            <div class="col-sm">
+                @helper.form(action = routes.HomeController.upload, 'enctype -> "multipart/form-data") {
 
-            <!-- <div class="form-group"> -->
-            <!-- <label for="archivo">Archivo</label> -->
-            <!-- <input type="file" id="archivo" name="archivo" class="col-sm-6 form-control"> -->
-            <!-- <small class="form-text text-muted">Archivo a subir</small> -->
-            <!-- </div> -->
-            @helper.inputFile( form("archivo") )
+                    <!-- <form action="@routes.HomeController.upload" enctype="multipart/form-data" method="POST"> -->
 
-            <button type="submit" class="col-sm-2 col-sm-offset-5 btn btn-primary">Subir</button>
-            <!-- </form> -->
-        }
+                    <!-- <div class="form-group"> -->
+                    <!-- <label for="archivo">Archivo</label> -->
+                    <!-- <input type="file" id="archivo" name="archivo" class="col-sm-6 form-control"> -->
+                    <!-- <small class="form-text text-muted">Archivo a subir</small> -->
+                    <!-- </div> -->
+                    @helper.inputFile( form("archivo") )
+
+                    <button type="submit" class="col-sm-3 col-sm-offset-4 btn btn-primary">Subir</button>
+                    <!-- </form> -->
+                }
+            </div>
+        </div>
+
+        <div class="row">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Nombre</th>
+                        <th>Hash</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for(a <- archivos) {
+                        <tr>
+                            <td>@a.id</td>
+                            <td>@a.name</td>
+                            <td>@a.hash</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
   </div>
 }

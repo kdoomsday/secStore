@@ -7,6 +7,8 @@ import play.api.data.Form
 import play.api.data.Forms._
 import play.api.i18n.MessagesApi
 import play.api.mvc._
+import com.roundeights.hasher.Implicits._
+import dao.FileStore
 
 case class FormData(name: String)
 
@@ -14,7 +16,8 @@ case class FormData(name: String)
   * application's home page.
   */
 @Singleton
-class HomeController @Inject() (implicit val messagesApi: MessagesApi) extends Controller with i18n.I18nSupport {
+class HomeController @Inject() (store: FileStore)(implicit val messagesApi: MessagesApi)
+    extends Controller with i18n.I18nSupport {
 
   val form = Form(
     mapping(
@@ -29,7 +32,7 @@ class HomeController @Inject() (implicit val messagesApi: MessagesApi) extends C
     * a path of `/`.
     */
   def index = Action { implicit request ⇒
-    Ok(views.html.index(form))
+    Ok(views.html.index(form, store.archivos()))
   }
 
   def second = Action { implicit request ⇒
@@ -40,8 +43,10 @@ class HomeController @Inject() (implicit val messagesApi: MessagesApi) extends C
     println("Uploading...")
 
     request.body.file("archivo").map { archivo ⇒
+      val name = archivo.filename
       val bytes = Files.readAllBytes(archivo.ref.file.toPath)
-      println("El archivo tiene tamanio" + bytes.size)
+      val hash = bytes.sha256.hex
+      store.store(name, bytes, hash)
 
       Redirect(routes.HomeController.index).flashing("message" → "Uploaded")
     }.getOrElse {
